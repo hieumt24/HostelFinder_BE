@@ -16,9 +16,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:3000")
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();
     });
 });
 
@@ -53,6 +54,8 @@ HostelFinder.Application.ServiceExtensions.ConfigureServices(builder.Services, b
 HostelFinder.Infrastructure.ServiceRegistration.Configure(builder.Services, builder.Configuration);
 
 var app = builder.Build();
+
+app.UseCors("AllowAllOrigins");
 
 //app.UseMiddleware<TokenValidationMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
